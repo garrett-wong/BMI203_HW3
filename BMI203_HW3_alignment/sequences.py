@@ -12,15 +12,14 @@ def readFasta(filename):
 	return seq
 
 allSeqFilenames = []
-for line in open("allSequences.txt", "r"):
+for line in open("BMI203_HW3_alignment/allSequences.txt", "r"):
 	allSeqFilenames.append(line.rstrip())
 
 allSeqs = {}
 for filename in allSeqFilenames:
-	allSeqs[filename] = readFasta(filename)
-
-posPairFs = [line.rstrip().split() for line in open("Pospairs.txt")]
+	allSeqs[filename] = readFasta("BMI203_HW3_alignment/"+filename)
+posPairFs = [line.rstrip().split() for line in open("BMI203_HW3_alignment/Pospairs.txt")]
 posPairs = [(allSeqs[fileA], allSeqs[fileB]) for fileA, fileB in posPairFs]
 
-negPairFs = [line.rstrip().split() for line in open("Negpairs.txt")]
+negPairFs = [line.rstrip().split() for line in open("BMI203_HW3_alignment/Negpairs.txt")]
 negPairs = [(allSeqs[fileA], allSeqs[fileB]) for fileA, fileB in negPairFs]

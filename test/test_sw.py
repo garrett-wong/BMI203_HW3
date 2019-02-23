@@ -1,6 +1,6 @@
-from sequences import *
-from matrices import blosum50
-from sw import smithWaterman
+from BMI203_HW3_alignment.sequences import *
+from BMI203_HW3_alignment.matrices import blosum50
+from BMI203_HW3_alignment.sw import smithWaterman
 
 # I want to make sure I can trace through matches and mismatches:
 def test_SW_trace_through_mismatch():
@@ -27,9 +27,10 @@ testA, testB = posPairs[5]
 # This pair are the sequences 
 #('RFKWGPASQQILFQAYERQKNPSKEERETLVEECNRAECIQRGVSPSQAQGLGSNLVTEVRVYNWFANRRKEEAFRH', 'GRKRKIDRDAVLNMWQQGLGASHISKTMNIARSTVYKVINESN')
 def test_SW_realData():
-	start, end, bestScore, alignA, alignB = smithWaterman(testA, testB, blosum50, -10, -1) == \
-	assert start, end == (35, 1), (59, 26)
+	start, end, bestScore, alignA, alignB = smithWaterman(testA, testB, blosum50, -10, -1)
+	assert start == (35, 1)
+	assert end == (59, 26)
 	assert bestScore == 35
-	assert alignA == RAECIQR-GVSPSQAQGLGSNLVTE
-	assert alignB == RKRKIDRDAVLNMWQQGLGASHISK
+	assert alignA == "RAECIQR-GVSPSQAQGLGSNLVTE"
+	assert alignB == "RKRKIDRDAVLNMWQQGLGASHISK"
 

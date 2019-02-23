@@ -1,6 +1,6 @@
 import sys
-from sequences import *
-from sw import smithWaterman
+from .sequences import *
+from .sw import smithWaterman
 import random
 import numpy as np
 

@@ -1,7 +1,7 @@
 import sys
-from sequences import *
-from optimizeMatrix import *
-from matrices import blosum50
+from BMI203_HW3_alignment.sequences import *
+from BMI203_HW3_alignment.optimizeMatrix import *
+from BMI203_HW3_alignment.matrices import blosum50
 
 tpAlignments, tnAlignments = getAlignments(scoringMatrix=blosum50,
 	gapStart=-10, gapExtend=-1)

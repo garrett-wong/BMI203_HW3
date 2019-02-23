@@ -8,7 +8,7 @@ def readSubstitutionMatrix(filename):
 	readHeader = False
 	header = []
 	rowi = 0
-	for line in open(filename, "r"):
+	for line in open("BMI203_HW3_alignment/" + filename, "r"):
 		# skip comments
 		if line[0] == "#":
 			continue

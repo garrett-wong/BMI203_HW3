@@ -1,8 +1,8 @@
 import sys
 import numpy as np
-from sequences import *
-from matrices import blosum50
-from sw import smithWaterman
+from .sequences import *
+from .matrices import blosum50
+from .sw import smithWaterman
 
 TPR = 70
 def getFpr(scoringMatrix, gapStart, gapExtend):
