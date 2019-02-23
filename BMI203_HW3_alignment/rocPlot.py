@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 import sklearn.metrics as skm
 
 def makeRocPlot(scoringMatrix, gapStart, gapExtend, name):
+	'''
+	given a scoring matrix and gap/extend parameters, finds the ROC using our
+	known TP and TN data, and saves a PDF plot. 
+	'''
 	# Score TPs and TNs
 	posScores = [smithWaterman(a,b, scoringMatrix, gapStart, gapExtend)[2] for a,b in posPairs]
 	negScores = [smithWaterman(a,b, scoringMatrix, gapStart, gapExtend)[2] for a,b in negPairs]
@@ -30,6 +34,10 @@ def makeRocPlot(scoringMatrix, gapStart, gapExtend, name):
 	fig.savefig("ROC_%s.pdf" % name)
 
 def makeRocPlot_normScores(scoringMatrix, gapStart, gapExtend, name):
+	'''
+	given a scoring matrix and gap/extend parameters, finds the ROC using our
+	known TP and TN data, when scaling by smaller string length, and saves a PDF plot. 
+	'''
 	# Score TPs and TNs
 	posScores = [smithWaterman(a,b, scoringMatrix, gapStart, gapExtend)[2]/min(len(a), len(b)) for a,b in posPairs]
 	negScores = [smithWaterman(a,b, scoringMatrix, gapStart, gapExtend)[2]/min(len(a), len(b)) for a,b in negPairs]
@@ -55,6 +63,9 @@ def makeRocPlot_normScores(scoringMatrix, gapStart, gapExtend, name):
 	fig.savefig("ROC_normScores_%s.pdf" % name)
 
 def makeRocPlot_givenScores(posScores, negScores, gapStart, gapExtend, name):
+	'''
+	given a list of TP and TP scores builds a ROC and PDF plots.
+	'''
 	# build vectors that sklearn's ROC stuff expects: a single vector of TP/TN identities,
 	# and a single vector of scores
 	allScores = posScores + negScores

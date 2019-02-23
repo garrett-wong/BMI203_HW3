@@ -1,8 +1,12 @@
 import sys
 
+# I use this to read in all my sequences.
+# posPairs and negPairs are the relevant lists of tuples of sequence strings.
+
 def readFasta(filename):
 	'''
-	reads in a protein sequence from a fasta file
+	reads in a protein sequence from a fasta file.
+	returns a string.
 	'''
 	seq = ""
 	for line in open(filename, "r"):

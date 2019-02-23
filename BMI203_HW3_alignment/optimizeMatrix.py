@@ -5,6 +5,12 @@ import random
 import numpy as np
 
 def getAlignments(scoringMatrix, gapStart, gapExtend):
+	'''
+	fetches true positive and true negative alignments using the scoring matrix, gapStart,
+	and gapExtend costs.
+
+	returns a list of true positive alignments (tuples of strings) and the same for true negatives.
+	'''
 	tpAlignments = []
 	for a,b in posPairs:
 		score, matchedA, matchedB = smithWaterman(a,b, scoringMatrix, gapStart, gapExtend)[2:]
@@ -18,6 +24,10 @@ def getAlignments(scoringMatrix, gapStart, gapExtend):
 def scoreAlignment(a, b, scoringMatrix, gapStart, gapExtend):
 	'''
 	given an alignment, just score it.
+
+	takes as input a and b; aligned strings,
+	as well as a scoring matrix and gap/extend parameters.
+	returns a score for this alignment.
 	'''
 	openGapA = False
 	openGapB = False
@@ -46,6 +56,11 @@ def scoreMatrix(tpAlignments, tnAlignments, scoringMatrix, gapStart, gapExtend):
 	score our alignments using scoringMatrix.
 	our objective function is the sum of TP rates at FP rates of 0.0,
 	0.1, 0.2, and 0.3.
+
+	takes as input true positive and true negative tuples of aligned strings, as
+	well as the scoring matrix and gap/extend costs for alignment.
+
+	returns the objective function.
 	'''
 	# First, find the cutoff for each FP rate.
 	k = frozenset(scoringMatrix.items())
@@ -62,6 +77,10 @@ def scoreMatrix(tpAlignments, tnAlignments, scoringMatrix, gapStart, gapExtend):
 def mutateMatrix(scoringMatrix, mutationChance, mutationAmount):
 	'''
 	mutate some of the values of the matrix.
+	each value has mutationChance probability [0, 1] of mutating,
+	and will change by adding gaussian noise with mean 0 and standard deviation mutationAmount.
+
+	returns the SAME matrix, modified.
 	'''
 	for key, value in scoringMatrix.items():
 		if random.random() < mutationChance:
@@ -70,13 +89,18 @@ def mutateMatrix(scoringMatrix, mutationChance, mutationAmount):
 
 def selection(pop, weights):
 	'''
-	creates a new generation of matrices by sampling with replacement with weights
+	creates a new generation of matrices by sampling with replacement with weights.
+
+	takes as input a list of objects and a list of selection probabilities, and
+	returns a listof the same size.
 	'''
 	return list(np.random.choice(pop, size=len(pop), p=weights))
 
 def scaleScores(scores, selectivePressure):
 	'''
 	scales scores so the largest/smallest is 10^selectivePressure and the sum is 1.
+
+	takes as input a list of scores and returns a new list of scaled scores.
 	'''
 	# Is there really not a more elegant way to do this
 	oldMin = min(scores)
@@ -93,8 +117,26 @@ def optimizeMatrix_geneticAlg(scoringMatrix, mutationChance, mutationAmount,
 	optimize an alignment score matrix using a genetic algorithm.
 
 	stops if we hit totalItersToStop iterations, or if we don't see
-	a new objective function value in the top 10 in
+	a new objective function value in the top (librarySize) in
 	stepsWithNoImprovement steps.
+
+	takes as input:
+	scoringMatrix
+	mutationChance		probability each entry in a scoring matrix will mutate
+	mutationAmount		stdev of mutation gaussian
+	selectivePressure	most fit individual is scaled to 10^selectivePressure * least fit
+	n                   pop size
+	totalStepsToStop	runtime step cutoff
+	stepsWithNoImprovement
+						step cutoff for seeing no new entries in our library of best matrices
+	librarySize			number of best matrices to remember and re-seed population with
+	gapStart			alignment params
+	gapExtend
+	tpAlignments		true positives
+	tnAlignments		true negatives
+
+	returns the final population of matrices, the scores for those matrices at the last step,
+	the library of best matrices, and a list of the mean objective function value at each step.
 	'''
 	# initialize population
 	pop = [scoringMatrix.copy() for i in range(N)]

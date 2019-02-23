@@ -6,12 +6,14 @@
 \usepackage{amsfonts}
 \usepackage{textgreek}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \begin{document}
 \title{BMI 203 HW 3}
 \author{Garrett Wong}
 \date{22 February 2019}
 \maketitle
 
+Code, including optimized matrices, is at \url{https://github.com/garrett-wong/BMI203_HW3}.
 
 \section{Optimizing gap penalites}
 
@@ -20,7 +22,7 @@
 I varied the gap opening penalty and extension penalties from 1 to 20 and 1 to 5 with the BLOSUM50 matrix and found the following pattern of FP rates when the TP rate was controlled to 0.7: (darker blue indicates a better(lower) false positive rate)
 
 \vspace{1em}
-\includegraphics[width=\textwidth]{../HW3_due_02_23/optimizeGapPenalties.pdf}
+\includegraphics[width=\textwidth]{../BMI203_HW3_alignment/plots/optimizeGapPenalties.pdf}
 \vspace{1em}
 
 We can see a diagonal of optimal gap opening and extension penalties, with penalties of (-6, -5), (-6, -4), (-7, -4), (-8, -3), and (-9, -2) respectively; all sharing the best FP rate of 0.2.
@@ -32,16 +34,16 @@ This diagonal pattern indicates a compensatory relationship between the gap open
 I proceeded with a gap opening penalty of -7 and gap extension penalty of -4. I created a ROC graph for BLOSUM50, which shows the highest AUC among the provided matrices of 0.84:
 
 \vspace{1em}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_blosum50.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_blosum50.pdf}
 \vspace{1em}
 
 compared to the ROC graphs for BLOSUM62, PAM100, PAM250, and MATIO, with AUCs of 0.72, 0.72, 0.82, and 0.70 respectively:
 
 \vspace{1em}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_blosum62.pdf}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_PAM100.pdf}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_PAM250.pdf}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_MATIO.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_blosum62.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_PAM100.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_PAM250.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_MATIO.pdf}
 \vspace{1em}
 
 
@@ -50,8 +52,8 @@ compared to the ROC graphs for BLOSUM62, PAM100, PAM250, and MATIO, with AUCs of
 When we normalize the Smith-Waterman scores by the length of the shortest sequence in the pair, we see the ROC curves get much worse. For the best performing matrix, BLOSUM50, we can see the AUC of 0.84 drops to 0.5:
 
 \vspace{1em}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_blosum50.pdf}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_normScores_blosum50.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_blosum50.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_normScores_blosum50.pdf}
 \vspace{1em}
 
 This may be because the normalization doesn't do a good job of capturing the length of the aligning sequence; we might want to, instead, normalize by the length of the aligned section.
@@ -63,14 +65,14 @@ This may be because the normalization doesn't do a good job of capturing the len
 I calculated optimal alignments using BLOSUM50, a gap opening penalty of -7 and gap extension penalty of -4. Optimization of the scoring matrix using a genetic algorithm improved the objective function from 2.16 to 3.76. The ROC curve of this optimized scoring matrix showed an AUC of 0.97:
 
 \vspace{1em}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_blosum50.pdf}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_geneticOptimized_blosum50.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_blosum50.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_geneticOptimized_blosum50.pdf}
 \vspace{1em}
 
 However, realigning and rescoring indicates a much less impressive ROC curve, with an AUC incidentally equal to the original matrix, at 0.84: 
 
 \vspace{1em}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_geneticOptimized_blosum50_rescored.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_geneticOptimized_blosum50_rescored.pdf}
 \vspace{1em}
 
 This indicates that my optimization algorithm was overfitting on features of the static alignments that we were optimizing on.
@@ -80,14 +82,14 @@ This indicates that my optimization algorithm was overfitting on features of the
 Optimization of the MATIO scoring matrix on the BLOSUM50 alignments using a genetic algorithm improved the objective function from 0.48 to 2.82 in the final optimized scoring matrix. The ROC curve of this optimized scoring matrix shows slightly improved performance over the original matrix, with an AUC of 0.76:
 
 \vspace{1em}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_geneticOptimized_matio.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_geneticOptimized_matio.pdf}
 \vspace{1em}
 
 Again, realigning and rescoring indicates a much less impressive ROC curve, with an AUC near the original matrix, at 0.71:
 
 
 \vspace{1em}
-\includegraphics[width=0.5\textwidth]{../HW3_due_02_23/ROC_geneticOptimized_matio_rescored.pdf}
+\includegraphics[width=0.5\textwidth]{../BMI203_HW3_alignment/plots/ROC_geneticOptimized_matio_rescored.pdf}
 \vspace{1em}
 
 \subsection{Describe your optimization algorithm briefly. How might you improve it?}

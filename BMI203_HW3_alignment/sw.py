@@ -4,6 +4,16 @@ import numpy as np
 def smithWaterman(a, b, subMat, gapStartCost, gapExtendCost):
 	'''
 	uses smith-waterman to find a maximal local alignment.
+
+	takes as input a and b, strings to align, as well as subMat, a
+	substitution matrix, a gap start cost, and gap extension cost.
+	The gap cost is (start + extend*(l-1)) where l is the length of
+	the gap (so the gap extension cost is only paid for 2+ length gaps).
+
+	returns a tuple of the indices of the beginning of the local alignment
+	in a and b; a tuple of the indices of the end of the alignment; the
+	score of the aligning section, and the aligned sections of a and b
+	with gaps added as "-".
 	'''
 	# initialize our matrices and trace matrices
 	match = np.zeros(shape=(len(a) + 1, len(b) + 1))

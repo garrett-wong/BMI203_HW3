@@ -2,7 +2,12 @@ import sys
 
 def readSubstitutionMatrix(filename):
 	'''
-	reads in a substitution matrix
+	reads in a substitution matrix from file.
+
+	returns a substitution matrix as a dictionary keyed by a
+	frozenset of the substitution (which enforces symmetry, and
+	also means that keys for matches are length 1); value the
+	substitution score
 	'''
 	matrix = {}
 	readHeader = False

@@ -6,6 +6,12 @@ from .sw import smithWaterman
 
 TPR = 70
 def getFpr(scoringMatrix, gapStart, gapExtend):
+	'''
+	find false positive rate at TPR of 0.7
+	
+	takes as input a scoring matrix and gap/extension costs,
+	returns the FPR.
+	'''
 	# First, find all the true positive alignment scores.
 	# We'll need these to find the cutoff that sets the TP rate
 	# at 0.7.
@@ -17,6 +23,10 @@ def getFpr(scoringMatrix, gapStart, gapExtend):
 	return sum(map(lambda x: x > cutoff, negScores))/len(negScores)
 
 def optimizeGaps():
+	'''
+	gets the FPR at TPR of 0.7 for a range of gapStart and gapExtend costs
+	with blosum50, and writes the results to a table to plot in R.
+	'''
 	with open("optimizeGapPenaltiesTest.txt", "w") as f:
 		for gapStart in range(-1, -21, -1):
 			for gapExtend in range(-1, -6, -1):
